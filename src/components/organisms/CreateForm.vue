@@ -1,7 +1,7 @@
 <template>
   <TodoForm
     v-model:title="title"
-    v-model:limited-date="limitedDate"
+    v-model:limited-at="limitedAt"
     v-model:memo="memo"
     button-text="作成"
     :is-auto-focus="true"
@@ -16,14 +16,14 @@ import TodoForm from './TodoForm.vue';
 import { useTodoList } from '@/stores/todoList';
 
 const title = ref('');
-const limitedDate = ref('');
+const limitedAt = ref('');
 const memo = ref('');
 
-const { createTask } = useTodoList();
+const { createTodo } = useTodoList();
 const onSubmit = () => {
-  createTask(title, limitedDate, memo);
+  createTodo({ title, limitedAt, memo });
   title.value = '';
-  limitedDate.value = '';
+  limitedAt.value = '';
   memo.value = '';
 };
 </script>

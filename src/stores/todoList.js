@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, toRaw, toValue } from 'vue';
+import { ref, toValue } from 'vue';
 import { subMilliseconds } from 'date-fns';
 import { TodoEntity } from '../entity/TodoEntity';
 
@@ -8,9 +8,11 @@ export const useTodoList = defineStore('todoList', () => {
 
   let newestId = 1;
 
-  function createTask(title, limitedStr = '', memo = '') {
-    const limitedAt = limitedStr === '' ? null : subMilliseconds(new Date(toValue(limitedStr)), 1);
+  function createTodo({ title, limitedStr = '', memo = '' }) {
+    const limitedAt =
+      toValue(limitedStr) === '' ? null : subMilliseconds(new Date(toValue(limitedStr)), 1);
     const now = new Date();
+    
     newestId++;
 
     const todo = new TodoEntity(
@@ -25,5 +27,5 @@ export const useTodoList = defineStore('todoList', () => {
     list.value.push(todo);
   }
 
-  return { list, createTask };
+  return { list, createTodo };
 });
