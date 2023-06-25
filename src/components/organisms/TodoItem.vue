@@ -1,32 +1,38 @@
 <template>
-  <v-list-item :border="true" class="todo-item" density="comfortable" :class="{'is-done': todo.isDone}">
+  <v-list-item :border="true" class="todo-item" density="comfortable" :class="{'is-done': todo.isDone}" @click="isOpenDialog = true">
     <span class="todo-item__title">
       {{ todo.title }}
     </span>
     <span class="todo-item__date" v-if="todo.limitedAt">期限: {{ format(todo.limitedAt, 'yyyy/MM/dd') }}</span>
     <template #append>
-      <v-btn :icon="mdiCheckBold" :border="! todo.isDone" class="todo-item__icon todo-item__icon--check" size="x-small" @click="checkBtnClickHandler" :color="todo.isDone ? 'light-blue-accent-3' : ''">
+      <v-btn :icon="mdiCheckBold" :border="! todo.isDone" class="todo-item__icon todo-item__icon--check" size="x-small" @click.stop="checkBtnClickHandler" :color="todo.isDone ? 'light-blue-accent-3' : ''">
       </v-btn>
-      <v-btn :icon="mdiTrashCanOutline" class="todo-item__icon" :elevation="3" color="red-accent-2" size="x-small" @click="deleteTodo(todo.id)">
+      <v-btn :icon="mdiTrashCanOutline" class="todo-item__icon" :elevation="3" color="red-accent-2" size="x-small" @click.stop="deleteTodo(todo.id)">
       </v-btn>
     </template>
+    <v-dialog v-model="isOpenDialog" width="70%" max-width="800px" class="todo-edit">
+      <EditForm :todo="todo" @close-dialog="isOpenDialog = false"></EditForm>
+    </v-dialog>
   </v-list-item>
 </template>
 
 <script setup>
 import { mdiCheckBold, mdiTrashCanOutline } from '@mdi/js';
 import { format } from 'date-fns';
-import {useTodoList} from '@/stores/todoList'
+import { useTodoList } from '@/stores/todoList'
+import EditForm from './EditForm.vue';
+import { ref } from 'vue';
 
-const props = defineProps(['todo']);
+defineProps(['todo']);
 const emits = defineEmits(['toggleIsDone'])
 
 const { deleteTodo } = useTodoList();
 
 function checkBtnClickHandler() {
   emits('toggleIsDone');
-  
 }
+
+const isOpenDialog = ref(false);
 </script>
 
 <style lang="scss" scoped>
@@ -67,5 +73,8 @@ function checkBtnClickHandler() {
       color: lighten(variables.$light-grey-text-color, 20%);
     }
   }
+}
+
+.todo-edit {
 }
 </style>

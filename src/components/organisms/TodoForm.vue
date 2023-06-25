@@ -1,14 +1,14 @@
 <template>
   <ContentBoard>
-    <template #title>タスク作成</template>
+    <template #title>{{ formTitle }}</template>
     <template #contents>
       <v-form ref="formElement" @submit.prevent="onSubmit">
         <v-row>
           <v-text-field
             variant="underlined"
             label="タイトル"
-            @input="$emit('update:title', $event.target.value)"
-            :model-value="title"
+            @input="$emit('update:todoTitle', $event.target.value)"
+            :model-value="todoTitle"
             :rules="titleRules"
             ref="titleElement"
           ></v-text-field>
@@ -35,7 +35,7 @@
             :rules="memoRules"
           />
         </v-row>
-        <v-row justify="center">
+        <v-row justify="center" class="btn-wrapper">
           <SubmitButton :text="buttonText"></SubmitButton>
           <slot name="buttons"></slot>
         </v-row>
@@ -50,7 +50,7 @@ import ContentBoard from '../molecules/ContentBoard.vue';
 import SubmitButton from '../molecules/SubmitButton.vue';
 
 const props = defineProps({
-  title: {
+  todoTitle: {
     type: String,
     required: true
   },
@@ -62,13 +62,17 @@ const props = defineProps({
     type: String,
     required: true
   },
+  formTitle: {
+    type: String,
+    required: true
+  },
   buttonText: {
     type: String,
     required: true
   },
   isAutoFocus: Boolean
 });
-const emits = defineEmits(['update:title', 'update:limitedAt', 'update:memo', 'submit']);
+const emits = defineEmits(['update:todoTitle', 'update:limitedAt', 'update:memo', 'submit']);
 
 // バリデーションルール設定
 const titleMaxChars = 20;
@@ -121,5 +125,11 @@ onMounted(() => autoFocus);
 
 .date-text-field {
   max-width: 300px;
+}
+
+.btn-wrapper {
+  .v-btn {
+    margin-right: 16px;
+  }
 }
 </style>

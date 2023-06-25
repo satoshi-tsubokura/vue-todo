@@ -9,7 +9,7 @@
       </v-tabs>
       <v-window v-model="tab">
         <v-window-item  v-for="({ todoList }, state) in todoStateGroups" :key="state" :value="state" reverse-transition="fade-transition" transition="fade-transition">
-          <v-list :border="true" class="todo-list">
+          <v-list :border="true" class="todo-list" select-strategy="classic">
             <v-fade-transition :group="true">
               <TodoItem v-for="item in todoList" :key="item.id" :todo="item" @toggle-is-done="toggleIsDone(item)"></TodoItem>
             </v-fade-transition>
@@ -77,6 +77,6 @@ function toggleIsDone(todo) {
   border: variables.$default-border;
   border-top: none;
   padding: 10px;
-  min-height: 100px;
+  min-height: 50px;
 }
 </style>

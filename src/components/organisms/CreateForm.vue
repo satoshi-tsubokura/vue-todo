@@ -1,8 +1,9 @@
 <template>
   <TodoForm
-    v-model:title="title"
-    v-model:limited-at="limitedAt"
+    v-model:todo-title="title"
+    v-model:limited-at="limitedStr"
     v-model:memo="memo"
+    form-title="タスク作成"
     button-text="作成"
     :is-auto-focus="true"
     @submit="onSubmit"
@@ -16,14 +17,14 @@ import TodoForm from './TodoForm.vue';
 import { useTodoList } from '@/stores/todoList';
 
 const title = ref('');
-const limitedAt = ref('');
+const limitedStr = ref('');
 const memo = ref('');
 
 const { createTodo } = useTodoList();
 const onSubmit = () => {
-  createTodo({ title, limitedAt, memo });
+  createTodo({ title, limitedStr, memo });
   title.value = '';
-  limitedAt.value = '';
+  limitedStr.value = '';
   memo.value = '';
 };
 </script>

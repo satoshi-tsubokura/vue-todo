@@ -45,5 +45,15 @@ export const useTodoList = defineStore('todoList', () => {
     }
   }
 
-  return { list, isDoneList, notDoneList, createTodo, deleteTodo };
+  function editTodo({ id, title, limitedStr = '', memo = '' }) {
+    const todo = list.value.find((item) => item.id === id);
+
+    todo.title = title;
+    todo.limitedAt =
+      toValue(limitedStr) === '' ? null : subMilliseconds(new Date(toValue(limitedStr)), 1);
+    todo.memo = memo;
+    todo.updatedAt = new Date();
+  }
+
+  return { list, isDoneList, notDoneList, createTodo, deleteTodo, editTodo };
 });
