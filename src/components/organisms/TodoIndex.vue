@@ -24,7 +24,7 @@
 import { ref, reactive } from 'vue';
 import ContentBoard from '../molecules/ContentBoard.vue';
 import { useTodoList } from '@/stores/todoList';
-import TodoItem from '../molecules/TodoItem.vue';
+import TodoItem from './TodoItem.vue';
 import { storeToRefs } from 'pinia';
 
 const { list, isDoneList, notDoneList } = storeToRefs(useTodoList());

@@ -7,7 +7,7 @@
     <template #append>
       <v-btn :icon="mdiCheckBold" :border="! todo.isDone" class="todo-item__icon todo-item__icon--check" size="x-small" @click="checkBtnClickHandler" :color="todo.isDone ? 'light-blue-accent-3' : ''">
       </v-btn>
-      <v-btn :icon="mdiTrashCanOutline" class="todo-item__icon" :elevation="3" color="red-accent-2" size="x-small">
+      <v-btn :icon="mdiTrashCanOutline" class="todo-item__icon" :elevation="3" color="red-accent-2" size="x-small" @click="deleteTodo(todo.id)">
       </v-btn>
     </template>
   </v-list-item>
@@ -16,9 +16,12 @@
 <script setup>
 import { mdiCheckBold, mdiTrashCanOutline } from '@mdi/js';
 import { format } from 'date-fns';
+import {useTodoList} from '@/stores/todoList'
 
 const props = defineProps(['todo']);
 const emits = defineEmits(['toggleIsDone'])
+
+const { deleteTodo } = useTodoList();
 
 function checkBtnClickHandler() {
   emits('toggleIsDone');

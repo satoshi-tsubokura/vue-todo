@@ -35,5 +35,15 @@ export const useTodoList = defineStore('todoList', () => {
     list.value.push(todo);
   }
 
-  return { list, createTodo, isDoneList, notDoneList };
+  function deleteTodo(id) {
+    const index = list.value.findIndex((item) => {
+      return item.id === id;
+    });
+
+    if (index !== -1) {
+      list.value.splice(index, 1);
+    }
+  }
+
+  return { list, isDoneList, notDoneList, createTodo, deleteTodo };
 });
