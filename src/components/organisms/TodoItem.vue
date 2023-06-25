@@ -1,5 +1,5 @@
 <template>
-  <v-list-item :border="true" class="todo-item" density="comfortable">
+  <v-list-item :border="true" class="todo-item" density="comfortable" :class="{'is-done': todo.isDone}">
     <span class="todo-item__title">
       {{ todo.title }}
     </span>
@@ -25,11 +25,13 @@ const { deleteTodo } = useTodoList();
 
 function checkBtnClickHandler() {
   emits('toggleIsDone');
+  
 }
 </script>
 
 <style lang="scss" scoped>
 @use '../../assets/variables';
+@use "sass:map";
 .todo-item {
   margin: 10px auto;
   border: variables.$default-border;
@@ -53,6 +55,17 @@ function checkBtnClickHandler() {
     text-align: right;
     font-size: 12px;
     color: variables.$light-grey-text-color;
+  }
+
+  &.is-done {
+    border-color: lighten(variables.$default-border-color, 50%);
+    .todo-item__title {
+      color: lighten(variables.$default-text-color, 50%);
+      text-decoration: line-through
+    }
+    .todo-item__date {
+      color: lighten(variables.$light-grey-text-color, 20%);
+    }
   }
 }
 </style>
