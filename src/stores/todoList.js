@@ -12,7 +12,7 @@ export const useTodoList = defineStore('todoList', () => {
     const limitedAt =
       toValue(limitedStr) === '' ? null : subMilliseconds(new Date(toValue(limitedStr)), 1);
     const now = new Date();
-    
+
     newestId++;
 
     const todo = new TodoEntity(

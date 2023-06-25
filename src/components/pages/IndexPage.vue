@@ -2,7 +2,7 @@
   <v-main class="bg">
     <v-container>
       <v-row justify="space-around">
-        <v-col align-self="stretch" cols="0" sm="6" md="6" lg="6" xl="6">
+        <v-col align-self="stretch" cols="0" sm="6" md="6" lg="6" xl="5">
           <v-row>
             <v-col align-self="stretch">
               <CreateForm></CreateForm>
@@ -14,7 +14,7 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12" sm="6" md="6" lg="6" xl="6">
+        <v-col cols="12" sm="6" md="6" lg="6" xl="5">
           <TodoIndex></TodoIndex>
         </v-col>
       </v-row>

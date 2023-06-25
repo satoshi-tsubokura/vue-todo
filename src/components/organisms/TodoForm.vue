@@ -19,10 +19,10 @@
             label="期限"
             type="date"
             class="date-text-field"
-            @input="$emit('update:limitedDate', $event.target.value)"
-            :model-value="limitedDate"
-            :rules="limitedDateRules"
-            ref="limitedDateElement"
+            @input="$emit('update:limitedAt', $event.target.value)"
+            :model-value="limitedAt"
+            :rules="limitedAtRules"
+            ref="limitedAtElement"
           />
         </v-row>
         <v-row>
@@ -54,7 +54,7 @@ const props = defineProps({
     type: String,
     required: true
   },
-  limitedDate: {
+  limitedAt: {
     type: String,
     required: true
   },
@@ -68,7 +68,7 @@ const props = defineProps({
   },
   isAutoFocus: Boolean
 });
-const emits = defineEmits(['update:title', 'update:limitedDate', 'update:memo', 'submit']);
+const emits = defineEmits(['update:title', 'update:limitedAt', 'update:memo', 'submit']);
 
 // バリデーションルール設定
 const titleMaxChars = 20;
@@ -78,10 +78,10 @@ const titleRules = [
 ];
 
   // HTML5標準のバリデーション機能を利用するため、DOMを参照する。
-const limitedDateElement = ref(null);
-const limitedDateRules = [
+const limitedAtElement = ref(null);
+const limitedAtRules = [
   async () =>
-    (await !limitedDateElement.value.validity.badInput) || '正しい年月日を入力してください。'
+    (await !limitedAtElement.value.validity.badInput) || '正しい年月日を入力してください。'
 ];
 
 const memoMaxChars = 500;

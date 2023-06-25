@@ -1,12 +1,10 @@
 <template>
- <v-app-bar :color="'grey-darken-1'" height="80" tag="header" :flat="true" :absolute="false">
-  <v-app-bar-title class="logo" text="TodoList" tag="h1"></v-app-bar-title>
- </v-app-bar>
+  <v-app-bar color="grey-darken-1" height="80" tag="header" :flat="true" :absolute="false">
+    <v-app-bar-title class="logo" text="TodoList" tag="h1"></v-app-bar-title>
+  </v-app-bar>
 </template>
 
-<script setup>
-
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 .logo {
