@@ -3,6 +3,9 @@
     <span class="todo-item__title">
       {{ todo.title }}
     </span>
+    <span class="todo-item__memo">
+      {{ useStringSlice(todo.memo, 100) }}
+    </span>
     <span class="todo-item__date" v-if="todo.limitedAt">期限: {{ format(todo.limitedAt, 'yyyy/MM/dd') }}</span>
     <template #append>
       <v-btn :icon="mdiCheckBold" :border="! todo.isDone" class="todo-item__icon todo-item__icon--check" size="x-small" @click.stop="checkBtnClickHandler" :color="todo.isDone ? 'light-blue-accent-3' : ''">
@@ -22,6 +25,7 @@ import { format } from 'date-fns';
 import { useTodoList } from '@/stores/todoList'
 import EditForm from './EditForm.vue';
 import { ref } from 'vue';
+import { useStringSlice } from '../../composables/stringSlice';
 
 defineProps(['todo']);
 const emits = defineEmits(['toggleIsDone'])
@@ -62,6 +66,12 @@ const isOpenDialog = ref(false);
     font-size: 12px;
     color: variables.$light-grey-text-color;
   }
+  
+  &__memo {
+    display: block;
+    font-size: 14px;
+    color: variables.$light-grey-text-color;
+  }
 
   &.is-done {
     border-color: lighten(variables.$default-border-color, 50%);
@@ -73,8 +83,5 @@ const isOpenDialog = ref(false);
       color: lighten(variables.$light-grey-text-color, 20%);
     }
   }
-}
-
-.todo-edit {
 }
 </style>
