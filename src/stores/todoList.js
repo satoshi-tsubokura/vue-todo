@@ -1,10 +1,18 @@
 import { defineStore } from 'pinia';
-import { ref, toValue } from 'vue';
+import { computed, ref, toValue } from 'vue';
 import { subMilliseconds } from 'date-fns';
 import { TodoEntity } from '../entity/TodoEntity';
 
 export const useTodoList = defineStore('todoList', () => {
   const list = ref([]);
+
+  const isDoneList = computed(() => {
+    return list.value.filter((item) => item.isDone);
+  });
+
+  const notDoneList = computed(() => {
+    return list.value.filter((item) => !item.isDone);
+  });
 
   let newestId = 1;
 
@@ -27,5 +35,5 @@ export const useTodoList = defineStore('todoList', () => {
     list.value.push(todo);
   }
 
-  return { list, createTodo };
+  return { list, createTodo, isDoneList, notDoneList };
 });

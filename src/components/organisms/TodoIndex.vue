@@ -4,14 +4,16 @@
     <template #contents>
       <v-card>
         <v-tabs class="todo-tabs" v-model="tab" grow hide-slider selected-class="v-tab-selected">
-          <v-tab value="all" :border="true" rounded="0">すべて</v-tab>
-          <v-tab value="todo" :border="true" rounded="0">作業中</v-tab>
-          <v-tab value="isDone" :border="true" rounded="0">完了</v-tab>
+          <template v-for="({ tabText }, state) in todoStateGroups" :key="state">
+            <v-tab :value="state" :border="true" rounded="0">{{ tabText }}</v-tab>
+          </template>
         </v-tabs>
         <v-window v-model="tab">
-          <v-list :border="true" class="todo-list">
-            <TodoItem v-for="item in list" :key="item.id" :todo="item" @toggle-is-done="toggleIsDone(item)"></TodoItem>
-          </v-list>
+          <v-window-item  v-for="({ todoList }, state) in todoStateGroups" :key="state" :value="state" reverse-transition="fade-transition" transition="fade-transition">
+            <v-list :border="true" class="todo-list">
+              <TodoItem v-for="item in todoList" :key="item.id" :todo="item" @toggle-is-done="toggleIsDone(item)"></TodoItem>
+            </v-list>
+          </v-window-item>
         </v-window>
       </v-card>
     </template>
@@ -19,14 +21,30 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import ContentBoard from '../molecules/ContentBoard.vue';
 import { useTodoList } from '@/stores/todoList';
 import TodoItem from '../molecules/TodoItem.vue';
+import { storeToRefs } from 'pinia';
 
-const tab = ref('all');
+const { list, isDoneList, notDoneList } = storeToRefs(useTodoList());
 
-const { list } = useTodoList();
+const todoStateGroups = reactive({
+  all: {
+    tabText: 'すべて',
+    todoList: list,
+  },
+  notDone: {
+    tabText: 'Todo',
+    todoList: notDoneList,
+  },
+  isDone: {
+    tabText: '完了',
+    todoList: isDoneList,
+  },
+}) 
+
+const tab = ref(null);
 
 function toggleIsDone(todo) {
   todo.isDone = !todo.isDone;
