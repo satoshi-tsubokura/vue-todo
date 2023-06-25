@@ -10,7 +10,9 @@
       <v-window v-model="tab">
         <v-window-item  v-for="({ todoList }, state) in todoStateGroups" :key="state" :value="state" reverse-transition="fade-transition" transition="fade-transition">
           <v-list :border="true" class="todo-list">
-            <TodoItem v-for="item in todoList" :key="item.id" :todo="item" @toggle-is-done="toggleIsDone(item)"></TodoItem>
+            <v-fade-transition :group="true">
+              <TodoItem v-for="item in todoList" :key="item.id" :todo="item" @toggle-is-done="toggleIsDone(item)"></TodoItem>
+            </v-fade-transition>
           </v-list>
         </v-window-item>
       </v-window>
