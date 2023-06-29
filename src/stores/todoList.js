@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { computed, ref, toValue, watch } from 'vue';
+import { computed, ref, toValue } from 'vue';
 import { isAfter, isBefore, isSameDay, isValid, subMilliseconds } from 'date-fns';
 import { TodoEntity } from '../entity/TodoEntity';
 import { useSearchStates } from './searchStates';
