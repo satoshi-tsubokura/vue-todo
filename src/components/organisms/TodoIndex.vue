@@ -1,30 +1,23 @@
 <template>
-  <ContentBoard class="todo-board">
-    <template #title>Todo</template>
-    <template #contents>
-      <v-tabs class="todo-tabs" v-model="tab" grow hide-slider selected-class="v-tab-selected">
+    <v-card ref="todoIndex" class="index">
+
+      <v-tabs class="todo-tabs" v-model="tab" grow hide-slider selected-class="v-tab-selected" bg-color="#fff">
         <template v-for="({ tabText }, state) in todoStateGroups" :key="state">
-          <v-tab :value="state" :border="true" rounded="0">{{ tabText }}</v-tab>
+          <v-tab :value="state" rounded="0" :height="tabHeight">{{ tabText }}</v-tab>
         </template>
       </v-tabs>
       <v-window v-model="tab">
-        <v-window-item  v-for="({ todoList }, state) in todoStateGroups" :key="state" :value="state" reverse-transition="fade-transition" transition="fade-transition">
-          <v-list :border="true" class="todo-list" select-strategy="classic">
-            <v-fade-transition :group="true">
-              <TodoItem v-for="item in todoList" :key="item.id" :todo="item" @toggle-is-done="toggleIsDone(item)"></TodoItem>
-            </v-fade-transition>
-          </v-list>
+        <v-window-item  v-for="({ list }, state) in todoStateGroups" :key="state" :value="state" reverse-transition="fade-transition" transition="fade-transition">
+          <TodoList :todo-list="list" :tab-height="tabHeight"></TodoList>
         </v-window-item>
       </v-window>
-    </template>
-  </ContentBoard>
+    </v-card>
 </template>
 
 <script setup>
 import { ref, reactive } from 'vue';
-import ContentBoard from '../molecules/ContentBoard.vue';
 import { useTodoList } from '@/stores/todoList';
-import TodoItem from './TodoItem.vue';
+import TodoList from './TodoList.vue';
 import { storeToRefs } from 'pinia';
 
 const { searchedList, isDoneList, notDoneList } = storeToRefs(useTodoList());
@@ -32,23 +25,20 @@ const { searchedList, isDoneList, notDoneList } = storeToRefs(useTodoList());
 const todoStateGroups = reactive({
   all: {
     tabText: 'すべて',
-    todoList: searchedList,
+    list: searchedList,
   },
   notDone: {
     tabText: 'Todo',
-    todoList: notDoneList,
+    list: notDoneList,
   },
   isDone: {
     tabText: '完了',
-    todoList: isDoneList,
+    list: isDoneList,
   },
 }) 
 
 const tab = ref(null);
-
-function toggleIsDone(todo) {
-  todo.isDone = !todo.isDone;
-}
+const tabHeight = 50;
 </script>
 
 <style lang="scss" scoped>
@@ -67,12 +57,5 @@ function toggleIsDone(todo) {
   &:first-child {
     border-left: variables.$default-border;
   }
-}
-
-.todo-list {
-  border: variables.$default-border;
-  border-top: none;
-  padding: 10px;
-  min-height: 50px;
 }
 </style>
