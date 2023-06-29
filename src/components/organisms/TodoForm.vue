@@ -2,11 +2,11 @@
   <ContentBoard>
     <template #title>{{ formTitle }}</template>
     <template #contents>
-      <v-form ref="formElement" @submit.prevent="onSubmit">
+      <v-form ref="formElement" @submit.prevent="onSubmit" class="todo-form">
         <v-row>
           <v-text-field
             variant="underlined"
-            label="タイトル"
+            :label="titleLabel"
             @input="$emit('update:todoTitle', $event.target.value)"
             :model-value="todoTitle"
             :rules="titleRules"
@@ -16,7 +16,7 @@
         <v-row>
           <v-text-field
             variant="underlined"
-            label="期限"
+            :label="limitedAtLabel"
             type="date"
             class="date-text-field"
             @input="$emit('update:limitedAt', $event.target.value)"
@@ -28,7 +28,7 @@
         <v-row>
           <v-textarea
             variant="outlined"
-            label="メモ"
+            :label="memoLabel"
             name="memo"
             @input="$emit('update:memo', $event.target.value)"
             :model-value="memo"
@@ -48,6 +48,7 @@
 import { onMounted, ref } from 'vue';
 import ContentBoard from '../molecules/ContentBoard.vue';
 import SubmitButton from '../molecules/SubmitButton.vue';
+import { useValidation } from '../../composables/validation';
 
 const props = defineProps({
   todoTitle: {
@@ -74,24 +75,20 @@ const props = defineProps({
 });
 const emits = defineEmits(['update:todoTitle', 'update:limitedAt', 'update:memo', 'submit']);
 
-// バリデーションルール設定
-const titleMaxChars = 20;
-const titleRules = [
-  (val) => !!val || 'タイトルは入力必須です。',
-  (val) => val.length <= titleMaxChars || `${titleMaxChars}文字以内で入力してください。`
-];
+const titleLabel = 'タイトル';
+const limitedAtLabel = '期限';
+const memoLabel = 'メモ';
 
-  // HTML5標準のバリデーション機能を利用するため、DOMを参照する。
-const limitedAtElement = ref(null);
-const limitedAtRules = [
-  async () =>
-    (await !limitedAtElement.value.validity.badInput) || '正しい年月日を入力してください。'
-];
+// バリデーションルール設定
+const { generateStringRules, generateDateRules, generateMemoRules, isFormValid } = useValidation();
+const titleMaxChars = 20;
+const titleRules = generateStringRules(titleLabel, titleMaxChars, true);
+
+const limitedAtElement = ref(null)
+const limitedAtRules = generateDateRules(limitedAtElement);
 
 const memoMaxChars = 500;
-const memoRules = [
-  (val) => val.length <= memoMaxChars || `${memoMaxChars}文字以内で入力してください。`
-];
+const memoRules = generateMemoRules(memoMaxChars);
 
 // オートフォーカス処理
 const titleElement = ref(null);
@@ -104,8 +101,7 @@ const autoFocus = async () => {
 // submit処理
 const formElement = ref(null);
 const onSubmit = async () => {
-  const { valid } = await formElement.value.validate();
-  if (!valid) {
+  if (! await isFormValid(formElement)) {
     return;
   }
   
@@ -118,18 +114,19 @@ onMounted(() => autoFocus);
 </script>
 
 <style lang="scss" scoped>
-.v-row {
-  margin: 0;
-  margin-bottom: 10px;
-}
-
-.date-text-field {
-  max-width: 300px;
-}
-
 .btn-wrapper {
   .v-btn {
     margin-right: 16px;
+  }
+}
+
+.date-text-field {
+  max-width: 200px;
+}
+
+.todo-form {
+  .v-row {
+    margin-bottom: -4px;
   }
 }
 </style>

@@ -27,12 +27,12 @@ import { useTodoList } from '@/stores/todoList';
 import TodoItem from './TodoItem.vue';
 import { storeToRefs } from 'pinia';
 
-const { list, isDoneList, notDoneList } = storeToRefs(useTodoList());
+const { searchedList, isDoneList, notDoneList } = storeToRefs(useTodoList());
 
 const todoStateGroups = reactive({
   all: {
     tabText: 'すべて',
-    todoList: list,
+    todoList: searchedList,
   },
   notDone: {
     tabText: 'Todo',
@@ -67,10 +67,6 @@ function toggleIsDone(todo) {
   &:first-child {
     border-left: variables.$default-border;
   }
-}
-
-.todo-board {
-  height: 100%;
 }
 
 .todo-list {
