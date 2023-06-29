@@ -12,7 +12,7 @@ export const useTodoList = defineStore('todoList', () => {
   const isDoneList = computed(() => searchedList.value.filter((item) => item.isDone));
   const notDoneList = computed(() => searchedList.value.filter((item) => !item.isDone));
 
-  let newestTodoId = 1;
+  let newestTodoId = 0;
 
   function createTodo({ title, limitedStr = '', memo = '' }) {
     const limitedAt =
@@ -106,7 +106,7 @@ export const useTodoList = defineStore('todoList', () => {
       isMatchedSearchStates(todo, { word, limitedStrFrom, limitedStrTo })
     );
 
-    searchedResults = sortSearchedList(searchedResults, order);
+    searchedResults = sortSearchedList(searchedResults, order.no);
 
     return searchedResults;
   }

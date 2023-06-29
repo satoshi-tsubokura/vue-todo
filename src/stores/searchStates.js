@@ -37,7 +37,7 @@ export const useSearchStates = defineStore('searchStates', () => {
     queryStates.value.limitedStrFrom = toValue(limitedStrFrom);
     queryStates.value.limitedStrTo = toValue(limitedStrTo);
     queryStates.value.order =
-      orderOptions.find((option) => option.no === order.no) ?? queryStates.value.order;
+    orderOptions.find((option) => option.no === toValue(order).no) ?? queryStates.value.order;
   }
 
   return { orderOptions, queryStates, changeQueryStates };
