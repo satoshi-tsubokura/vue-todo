@@ -89,7 +89,8 @@ const onSubmit = async () => {
     word: searchWord,
     limitedStrFrom,
     limitedStrTo,
-    order
+    order,
+    page: 1
   });
 }
 </script>
