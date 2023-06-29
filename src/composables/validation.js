@@ -1,7 +1,8 @@
+import { isAfter, isBefore } from 'date-fns';
 import { ref, toValue } from 'vue';
 
 export function useValidation() {
-  const generateStringRules = (name, isRequired = false, maxChars) => {
+  const generateStringRules = (name, maxChars, isRequired = false) => {
     return [
       (val) => !isRequired || !!val || `${name}は入力必須です。`,
       (val) => val.length <= maxChars || `${maxChars}文字以内で入力してください。`
@@ -12,7 +13,9 @@ export function useValidation() {
     // HTML5標準のバリデーション機能を利用するため、DOMを参照する。
     return [
       async () =>
-        (await !toValue(targetElement).validity.badInput) || '正しい年月日を入力してください。'
+        (await !toValue(targetElement).validity.badInput) || '正しい年月日を入力してください。',
+      async () =>
+        (await !toValue(targetElement).validity.rangeOverflow) || '期間内の日付を入力してください。'
     ];
   };
 
@@ -25,5 +28,10 @@ export function useValidation() {
     return valid;
   };
 
-  return { generateStringRules, generateDateRules, generateMemoRules, isFormValid };
+  return {
+    generateStringRules,
+    generateDateRules,
+    generateMemoRules,
+    isFormValid
+  };
 }

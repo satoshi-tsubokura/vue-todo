@@ -10,10 +10,10 @@ export class TodoEntity {
    * @param {Date} limitedAt
    * @param {string} memo
    * @param {boolean} isDone
-   * @param {Date} createdAt 
+   * @param {Date} createdAt
    * @param {Date} updatedAt
    */
-  constructor(id, title, limitedAt, memo, isDone, createdAt, updatedAt) {
+  constructor(id, title, limitedAt, memo, isDone, createdAt = new Date(), updatedAt = new Date()) {
     this.id = id;
     this.title = title;
     this.limitedAt = limitedAt;

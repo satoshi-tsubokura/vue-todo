@@ -82,16 +82,13 @@ const memoLabel = 'メモ';
 // バリデーションルール設定
 const { generateStringRules, generateDateRules, generateMemoRules, isFormValid } = useValidation();
 const titleMaxChars = 20;
-const titleRules = generateStringRules(titleLabel, true, titleMaxChars);
+const titleRules = generateStringRules(titleLabel, titleMaxChars, true);
 
 const limitedAtElement = ref(null)
 const limitedAtRules = generateDateRules(limitedAtElement);
 
 const memoMaxChars = 500;
 const memoRules = generateMemoRules(memoMaxChars);
-
-
-
 
 // オートフォーカス処理
 const titleElement = ref(null);
