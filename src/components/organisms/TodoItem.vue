@@ -79,7 +79,7 @@ const isOpenDialog = ref(false);
       color: lighten(variables.$default-text-color, 50%);
       text-decoration: line-through
     }
-    .todo-item__date {
+    .todo-item__date, .todo-item__memo {
       color: lighten(variables.$light-grey-text-color, 20%);
     }
   }
