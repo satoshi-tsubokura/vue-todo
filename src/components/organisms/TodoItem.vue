@@ -4,7 +4,7 @@
       {{ todo.title }}
     </span>
     <span class="todo-item__memo">
-      {{ useStringSlice(todo.memo, 100) }}
+      {{ useStringSlice(todo.memo, 50) }}
     </span>
     <span class="todo-item__date" v-if="todo.limitedAt">期限: {{ format(todo.limitedAt, 'yyyy/MM/dd') }}</span>
     <template #append>
@@ -79,7 +79,7 @@ const isOpenDialog = ref(false);
       color: lighten(variables.$default-text-color, 50%);
       text-decoration: line-through
     }
-    .todo-item__date {
+    .todo-item__date, .todo-item__memo {
       color: lighten(variables.$light-grey-text-color, 20%);
     }
   }

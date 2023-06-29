@@ -27,6 +27,6 @@ defineProps({
 }
 
 .content-board {
-  padding: 30px 45px;
+  padding: 30px 45px 42px;
 }
 </style>

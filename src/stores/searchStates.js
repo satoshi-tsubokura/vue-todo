@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, toValue } from 'vue';
 
 export const useSearchStates = defineStore('searchStates', () => {
+  const maxOnceFetchedNum = 15;
   const orderOptions = [
     {
       no: 0,
@@ -29,16 +30,18 @@ export const useSearchStates = defineStore('searchStates', () => {
     word: '',
     limitedStrFrom: '',
     limitedStrTo: '',
-    order: orderOptions[0]
+    order: orderOptions[0],
+    page: 1
   });
 
-  function changeQueryStates({ word, limitedStrFrom, limitedStrTo, order }) {
-    queryStates.value.word = toValue(word);
-    queryStates.value.limitedStrFrom = toValue(limitedStrFrom);
-    queryStates.value.limitedStrTo = toValue(limitedStrTo);
+  function changeQueryStates({ word, limitedStrFrom, limitedStrTo, order = {}, page = 1 }) {
+    queryStates.value.word = toValue(word) ?? queryStates.value.word;
+    queryStates.value.limitedStrFrom = toValue(limitedStrFrom) ?? queryStates.value.limitedStrFrom;
+    queryStates.value.limitedStrTo = toValue(limitedStrTo) ?? queryStates.value.limitedStrTo;
     queryStates.value.order =
-      orderOptions.find((option) => option.no === order.no) ?? queryStates.value.order;
+      orderOptions.find((option) => option.no === toValue(order).no) ?? queryStates.value.order;
+    queryStates.value.page = toValue(page);
   }
 
-  return { orderOptions, queryStates, changeQueryStates };
+  return { orderOptions, queryStates, maxOnceFetchedNum, changeQueryStates };
 });

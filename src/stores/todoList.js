@@ -6,13 +6,13 @@ import { useSearchStates } from './searchStates';
 
 export const useTodoList = defineStore('todoList', () => {
   const list = ref([]);
-  const { orderOptions, queryStates } = useSearchStates();
+  const { orderOptions, queryStates, maxOnceFetchedNum } = useSearchStates();
 
-  const searchedList = computed(() => searchTodo(queryStates));
+  const searchedList = computed(() => searchTodo(queryStates, maxOnceFetchedNum));
   const isDoneList = computed(() => searchedList.value.filter((item) => item.isDone));
   const notDoneList = computed(() => searchedList.value.filter((item) => !item.isDone));
 
-  let newestTodoId = 1;
+  let newestTodoId = 0;
 
   function createTodo({ title, limitedStr = '', memo = '' }) {
     const limitedAt =
@@ -96,17 +96,19 @@ export const useTodoList = defineStore('todoList', () => {
     }
   }
 
-  function searchTodo({
-    word = '',
-    limitedStrFrom = '',
-    limitedStrTo = '',
-    order = orderOptions[0]
-  }) {
+  function searchTodo(
+    { word = '', limitedStrFrom = '', limitedStrTo = '', order = orderOptions[0], page = 1 },
+    maxFetchedNum
+  ) {
     let searchedResults = list.value.filter((todo) =>
       isMatchedSearchStates(todo, { word, limitedStrFrom, limitedStrTo })
     );
 
-    searchedResults = sortSearchedList(searchedResults, order);
+    searchedResults = sortSearchedList(searchedResults, order.no);
+
+    if (maxFetchedNum) {
+      searchedResults.splice(page * maxFetchedNum);
+    }
 
     return searchedResults;
   }
