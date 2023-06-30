@@ -40,7 +40,7 @@ const isOpenDialog = ref(false);
 </script>
 
 <style lang="scss" scoped>
-@use '../../assets/variables';
+@use '../../assets/scss/variables';
 @use "sass:map";
 .todo-item {
   margin: 10px auto;

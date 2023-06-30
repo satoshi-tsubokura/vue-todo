@@ -1,13 +1,14 @@
+@use 'vuetify';
 @use './variables';
 
 @font-face {
   font-family: 'Roboto Slab';
-  src: url('./RobotoSlab-VariableFont_wght.ttf') format('truetype');
+  src: url('../fonts/RobotoSlab-VariableFont_wght.ttf') format('truetype');
 }
 
 @font-face {
   font-family: 'Noto Sans JP';
-  src: url('./NotoSansJP-VariableFont_wght.ttf') format('truetype');
+  src: url('../fonts/NotoSansJP-VariableFont_wght.ttf') format('truetype');
 }
 
 * {

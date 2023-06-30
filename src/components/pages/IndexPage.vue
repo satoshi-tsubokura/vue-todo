@@ -40,7 +40,7 @@ provide('leftColHeightRef', leftColHeight);
 
 <style lang="scss" scoped>
 .bg {
-  background: url('../../assets/backgroundimg_pc.png') no-repeat top left;
+  background: url('../../assets/imgs/backgroundimg_pc.png') no-repeat top left;
   background-size: cover;
 }
 </style>
