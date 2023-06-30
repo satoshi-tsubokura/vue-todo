@@ -7,12 +7,12 @@ export const useSearchStates = defineStore('searchStates', () => {
     {
       no: 0,
       text: '更新日新しい順',
-      sortFn: (todoA, todoB) => todoA.updatedAt.getTime() - todoB.updatedAt.getTime()
+      sortFn: (todoA, todoB) => todoB.updatedAt.getTime() - todoA.updatedAt.getTime()
     },
     {
       no: 1,
       text: '更新日古い順',
-      sortFn: (todoA, todoB) => todoB.updatedAt.getTime() - todoA.updatedAt.getTime()
+      sortFn: (todoA, todoB) => todoA.updatedAt.getTime() - todoB.updatedAt.getTime()
     },
     {
       no: 2,
