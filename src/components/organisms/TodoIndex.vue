@@ -42,7 +42,7 @@ const tabHeight = 50;
 </script>
 
 <style lang="scss" scoped>
-@use '../../assets/variables';
+@use '../../assets/scss/variables';
 
 .v-tab-selected {
   color: #ffffff;

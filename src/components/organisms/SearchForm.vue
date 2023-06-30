@@ -96,7 +96,7 @@ const onSubmit = async () => {
 </script>
 
 <style lang="scss" scoped>
-@use '../../assets/variables';
+@use '../../assets/scss/variables';
 
 .search-todo {
   &__between-text {
