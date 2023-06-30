@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { computed, ref, toValue } from 'vue';
-import { isAfter, isBefore, isSameDay, isValid, subMilliseconds } from 'date-fns';
+import { addDays, isAfter, isBefore, isSameDay, isValid, subMilliseconds } from 'date-fns';
 import { TodoEntity } from '../entity/TodoEntity';
 import { useSearchStates } from './searchStates';
 
@@ -14,9 +14,21 @@ export const useTodoList = defineStore('todoList', () => {
 
   let newestTodoId = 0;
 
+  function calcLimitedAt(limitedStr = '') {
+    const limitedStrRawVal = toValue(limitedStr);
+
+    if (isValid(limitedStrRawVal)) {
+      return null;
+    }
+
+    const limitedAtNextDate = addDays(new Date(limitedStrRawVal), 1);
+
+    // 期限日ギリギリの時間を計算
+    return subMilliseconds(limitedAtNextDate, 1);
+  }
+
   function createTodo({ title, limitedStr = '', memo = '' }) {
-    const limitedAt =
-      toValue(limitedStr) === '' ? null : subMilliseconds(new Date(toValue(limitedStr)), 1);
+    const limitedAt = calcLimitedAt(limitedStr);
 
     newestTodoId++;
 
@@ -25,7 +37,7 @@ export const useTodoList = defineStore('todoList', () => {
   }
 
   function deleteTodo(id) {
-    const index = list.value.findIndex((item) => item.id === id);
+    const index = list.value.findIndex((item) => item.id === toValue(id));
 
     if (index !== -1) {
       list.value.splice(index, 1);
@@ -33,11 +45,10 @@ export const useTodoList = defineStore('todoList', () => {
   }
 
   function editTodo({ id, title, limitedStr = '', memo = '' }) {
-    const todo = list.value.find((item) => item.id === id);
+    const todo = list.value.find((item) => item.id === toValue(id));
 
     todo.title = toValue(title);
-    todo.limitedAt =
-      toValue(limitedStr) === '' ? null : subMilliseconds(new Date(toValue(limitedStr)), 1);
+    todo.limitedAt = calcLimitedAt(limitedStr);
     todo.memo = memo;
     todo.updatedAt = new Date();
   }
@@ -77,7 +88,6 @@ export const useTodoList = defineStore('todoList', () => {
 
   function sortSearchedList(todoList, orderNo = orderOptions[0].no) {
     const sortFunction = orderOptions.find((option) => option.no === orderNo)?.sortFn;
-
     if (!sortFunction) {
       return todoList;
     }
