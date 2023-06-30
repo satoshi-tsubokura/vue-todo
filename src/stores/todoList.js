@@ -14,17 +14,20 @@ export const useTodoList = defineStore('todoList', () => {
 
   let newestTodoId = 0;
 
+  /*******   以下、関数(actions)   *******/
+
   function calcLimitedAt(limitedStr = '') {
     const limitedStrRawVal = toValue(limitedStr);
 
-    if (isValid(limitedStrRawVal)) {
+    const limitedAtDay = new Date(limitedStrRawVal);
+    if (!isValid(limitedAtDay)) {
       return null;
     }
 
-    const limitedAtNextDate = addDays(new Date(limitedStrRawVal), 1);
+    const limitedAtNextDay = addDays(limitedAtDay, 1);
 
     // 期限日ギリギリの時間を計算
-    return subMilliseconds(limitedAtNextDate, 1);
+    return subMilliseconds(limitedAtNextDay, 1);
   }
 
   function createTodo({ title, limitedStr = '', memo = '' }) {
@@ -53,6 +56,23 @@ export const useTodoList = defineStore('todoList', () => {
     todo.updatedAt = new Date();
   }
 
+  function searchTodo(
+    { word = '', limitedStrFrom = '', limitedStrTo = '', order = orderOptions[0], page = 1 },
+    maxFetchedNum
+  ) {
+    let searchedResults = list.value.filter((todo) =>
+      isMatchedSearchStates(todo, { word, limitedStrFrom, limitedStrTo })
+    );
+
+    searchedResults = sortSearchedList(searchedResults, order.no);
+
+    if (maxFetchedNum) {
+      searchedResults.splice(page * maxFetchedNum);
+    }
+
+    return searchedResults;
+  }
+
   function isMatchedSearchStates(todo, { word = '', limitedStrFrom = '', limitedStrTo = '' }) {
     // 文字列マッチ判定
     const wordMatched = todo.title.indexOf(word) !== -1 || todo.memo.indexOf(word) !== -1;
@@ -63,24 +83,20 @@ export const useTodoList = defineStore('todoList', () => {
     if (limitedStrFrom === '' && limitedStrTo === '') {
       dateMatched = true;
     } else {
-      if (todo.limitedAt === null || isValid(limitedStrFrom) || isValid(limitedStrTo)) {
-        dateMatched = false;
-      } else {
-        const limitedFrom = new Date(limitedStrFrom);
-        const limitedTo = new Date(limitedStrTo);
+      const limitedFrom = new Date(limitedStrFrom);
+      const limitedTo = new Date(limitedStrTo);
 
-        const isAfterFrom =
-          limitedStrFrom === '' ||
-          isAfter(todo.limitedAt, limitedFrom) ||
-          isSameDay(todo.limitedAt, limitedFrom);
+      const isAfterFrom =
+        limitedStrFrom === '' ||
+        isAfter(todo.limitedAt, limitedFrom) ||
+        isSameDay(todo.limitedAt, limitedFrom);
 
-        const isBeforeTo =
-          limitedStrTo === '' ||
-          isBefore(todo.limitedAt, limitedTo) ||
-          isSameDay(todo.limitedAt, limitedTo);
+      const isBeforeTo =
+        limitedStrTo === '' ||
+        isBefore(todo.limitedAt, limitedTo) ||
+        isSameDay(todo.limitedAt, limitedTo);
 
-        dateMatched = isAfterFrom && isBeforeTo;
-      }
+      dateMatched = isAfterFrom && isBeforeTo;
     }
 
     return wordMatched && dateMatched;
@@ -104,23 +120,6 @@ export const useTodoList = defineStore('todoList', () => {
     } else {
       return toValue(todoList).sort(sortFunction);
     }
-  }
-
-  function searchTodo(
-    { word = '', limitedStrFrom = '', limitedStrTo = '', order = orderOptions[0], page = 1 },
-    maxFetchedNum
-  ) {
-    let searchedResults = list.value.filter((todo) =>
-      isMatchedSearchStates(todo, { word, limitedStrFrom, limitedStrTo })
-    );
-
-    searchedResults = sortSearchedList(searchedResults, order.no);
-
-    if (maxFetchedNum) {
-      searchedResults.splice(page * maxFetchedNum);
-    }
-
-    return searchedResults;
   }
 
   return {
