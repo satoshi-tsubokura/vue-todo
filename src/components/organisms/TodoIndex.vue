@@ -3,12 +3,12 @@
 
       <v-tabs class="todo-tabs" v-model="tab" grow hide-slider selected-class="v-tab-selected" bg-color="#fff">
         <template v-for="({ tabText }, state) in todoStateGroups" :key="state">
-          <v-tab :value="state" rounded="0" :height="tabHeight">{{ tabText }}</v-tab>
+          <v-tab :value="state" rounded="0" class="todo-tabs__item">{{ tabText }}</v-tab>
         </template>
       </v-tabs>
       <v-window v-model="tab">
         <v-window-item  v-for="({ list }, state) in todoStateGroups" :key="state" :value="state" reverse-transition="fade-transition" transition="fade-transition">
-          <TodoList :todo-list="list" :tab-height="tabHeight"></TodoList>
+          <TodoList :todo-list="list"></TodoList>
         </v-window-item>
       </v-window>
     </v-card>
@@ -38,11 +38,10 @@ const todoStateGroups = reactive({
 }) 
 
 const tab = ref(null);
-const tabHeight = 50;
 </script>
 
 <style lang="scss" scoped>
-@use '../../assets/scss/variables';
+@use '../../assets/scss/variables' as *;
 
 .v-tab-selected {
   color: #ffffff;
@@ -50,12 +49,18 @@ const tabHeight = 50;
 }
 
 .v-btn--border {
-  border: variables.$default-border;
+  border: $default-border;
   border-left: none;
   border-bottom: none;
   
   &:first-child {
-    border-left: variables.$default-border;
+    border-left: $default-border;
+  }
+}
+
+.todo-tabs {
+  &__item {
+    height: $todolist-tab-height;
   }
 }
 </style>

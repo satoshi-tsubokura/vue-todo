@@ -1,33 +1,28 @@
 <template>
-  <v-list  select-strategy="classic" class="todo-list" :max-height="maxListHeight" ref="todoListRef">
-    <v-fade-transition :group="true">
+  <v-list  select-strategy="classic" class="todo-list"  ref="todoListRef">
+    <!-- <v-fade-transition :group="true"> -->
       <TodoItem v-for="item in todoList" :key="item.id" :todo="item" @toggle-is-done="toggleIsDone(item)"></TodoItem>
-    </v-fade-transition>
+    <!-- </v-fade-transition> -->
   </v-list>
 </template>
 
 <script setup>
-import { inject, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import TodoItem from './TodoItem.vue';
 import { useSearchStates } from '../../stores/searchStates';
 
-defineProps(['todoList', 'tabHeight']);
+defineProps(['todoList']);
 const { changeQueryStates, queryStates } = useSearchStates();
 
 const todoListRef = ref(null);
-const maxListHeight = ref(0);
+
 onMounted(() => {
-  //リストのmaxheightの設定
-  // 左列の高さに合わせる
-  maxListHeight.value = inject('leftColHeightRef').value;
-  
   // スクロールしたら新たにtodoListを取得する
   const todoListElement = todoListRef.value.$el;
   todoListElement.addEventListener('scroll', (ev) => {
-    const maxScrollTop = ev.target.scrollHeight - ev.target.clientHeight;
 
-    // < 1にすると、下部に到達した判定にならない時がある。
-    const isScrollBottom = maxScrollTop - ev.target.scrollTop < 1.2;
+  // chromeでなぜか1以下にならない。Math.ceilで小数点切り上げ
+  const isScrollBottom = Math.abs(ev.target.scrollHeight - ev.target.clientHeight - Math.ceil(ev.target.scrollTop)) <= 1;
 
     if (isScrollBottom) {
       changeQueryStates({ page: queryStates.page + 1 })
@@ -41,9 +36,16 @@ function toggleIsDone(todo) {
 </script>
 
 <style lang="scss" scoped>
+@use '../../assets/scss/variables' as *;
+
 .todo-list {
   padding: 10px;
-  min-height: 50px;
   overflow-y: scroll;
+  height: 840px;
+
+  @media all and (max-width: $sm-bp) {
+    // 画面の高さ - ヘッダーの高さ - タブの高さ - containerのpadding
+    height: calc(100vh - $sm-header-height - $todolist-tab-height - 32px)
+  }
 }
 </style>

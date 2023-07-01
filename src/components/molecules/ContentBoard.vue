@@ -20,6 +20,7 @@ defineProps({
 </script>
 
 <style lang="scss" scoped>
+@use '../../assets/scss/variables' as *;
 .content-title {
   font-size: 24px;
   font-weight: bold;
@@ -28,5 +29,9 @@ defineProps({
 
 .content-board {
   padding: 30px 45px 42px;
+
+  @media all and (max-width: $sm-bp) {
+    padding: 15px 30px 27px;
+  }
 }
 </style>
