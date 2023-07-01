@@ -7,12 +7,16 @@
     <v-btn :icon="mdiMagnify" v-show="smAndDown" @click="searchFormDrawer = !searchFormDrawer">
     </v-btn>
   </v-app-bar>
-  <v-navigation-drawer location="top" v-model="createFormDrawer" :width="createTodoFormHeight" v-show="smAndDown">
-    <CreateForm is-dialog @close="createFormDrawer = false" ref="createTodoForm"></CreateForm>
+  <template v-if="smAndDown">
+    <v-navigation-drawer location="top" v-model="createFormDrawer" :width="createTodoFormHeight">
+      <CreateForm is-dialog @close="createFormDrawer = false" ref="createTodoForm"></CreateForm>
+    </v-navigation-drawer>
+  </template>
+  <template v-if="smAndDown">
+    <v-navigation-drawer location="top" :model-value="searchFormDrawer" :width="searchTodoFormHeight">
+      <SearchForm is-dialog @close="searchFormDrawer = false" ref="searchTodoForm"></SearchForm>
   </v-navigation-drawer>
-  <v-navigation-drawer location="top" v-model="searchFormDrawer" :width="searchTodoFormHeight" v-show="smAndDown">
-    <SearchForm is-dialog @close="searchFormDrawer = false" ref="searchTodoForm"></SearchForm>
-  </v-navigation-drawer>
+  </template>
 </template>
 
 <script setup>
@@ -29,6 +33,10 @@ const { smAndDown } = useDisplay();
 
 const createFormDrawer = ref(false);
 const searchFormDrawer = ref(false);
+
+watch(smAndDown, () => {
+  console.log(smAndDown);
+})
 
 // drawerが片方しか開かないように制御
 watch(createFormDrawer, () => {
