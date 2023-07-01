@@ -1,5 +1,5 @@
 <template>
-    <v-card ref="todoIndex" class="index">
+    <v-card ref="todoIndex" class="todo-index">
 
       <v-tabs class="todo-tabs" v-model="tab" grow hide-slider selected-class="v-tab-selected" bg-color="#fff">
         <template v-for="({ tabText }, state) in todoStateGroups" :key="state">
@@ -7,8 +7,9 @@
         </template>
       </v-tabs>
       <v-window v-model="tab">
-        <v-window-item  v-for="({ list }, state) in todoStateGroups" :key="state" :value="state" reverse-transition="fade-transition" transition="fade-transition">
-          <TodoList :todo-list="list"></TodoList>
+        <v-window-item  v-for="({ list, noTodoText }, state) in todoStateGroups" :key="state" :value="state" reverse-transition="fade-transition" transition="fade-transition">
+          <TodoList :todo-list="list" v-if="list.length > 0"></TodoList>
+          <p v-else class="todo-index__text todo-index__text--grey pt-6">{{ noTodoText }}</p>
         </v-window-item>
       </v-window>
     </v-card>
@@ -26,14 +27,17 @@ const todoStateGroups = reactive({
   all: {
     tabText: 'すべて',
     list: searchedList,
+    noTodoText: 'タスクを追加しよう！'
   },
   notDone: {
     tabText: 'Todo',
     list: notDoneList,
+    noTodoText: '作業中のタスクはございません。'
   },
   isDone: {
-    tabText: '完了',
+    tabText: '完了済み',
     list: isDoneList,
+    noTodoText: '完了済みのタスクはございません。'
   },
 }) 
 
@@ -42,6 +46,17 @@ const tab = ref(null);
 
 <style lang="scss" scoped>
 @use '../../assets/scss/variables' as *;
+
+.todo-index {
+  min-height: 500px;
+ 
+  &__text {
+    text-align: center; 
+    &--grey {
+      color: $light-grey-text-color;
+    }
+  }
+}
 
 .v-tab-selected {
   color: #ffffff;
@@ -63,4 +78,5 @@ const tab = ref(null);
     height: $todolist-tab-height;
   }
 }
+
 </style>

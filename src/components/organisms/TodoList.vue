@@ -1,8 +1,8 @@
 <template>
-  <v-list  select-strategy="classic" class="todo-list"  ref="todoListRef">
-    <!-- <v-fade-transition :group="true"> -->
+  <v-list  select-strategy="classic" class="todo-list" ref="todoListRef">
+    <v-fade-transition :group="true">
       <TodoItem v-for="item in todoList" :key="item.id" :todo="item" @toggle-is-done="toggleIsDone(item)"></TodoItem>
-    <!-- </v-fade-transition> -->
+    </v-fade-transition>
   </v-list>
 </template>
 
