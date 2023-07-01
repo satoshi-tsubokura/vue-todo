@@ -9,3 +9,11 @@ $default-border: 1px solid $default-border-color;
 
 /*** height ***/
 $pc-header-height: 80px;
+$sm-header-height: 64px;
+
+$todolist-tab-height: 50px;
+
+/*** breakpoints ***/
+//vuetifyのデフォルトに準拠
+$sm-bp: 959px;
+$xs-bp: 599px

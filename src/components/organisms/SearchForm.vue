@@ -43,9 +43,10 @@
             v-model="order"
             />
         </v-row>
-        <v-row justify="center">
+        <ButtonWrapper>
           <SubmitButton text="検索"></SubmitButton>
-        </v-row>
+          <v-btn variant="outlined" v-if="isDialog" @click="onClose" text="閉じる"></v-btn>
+        </ButtonWrapper>
       </v-form>
     </template>
   </ContentBoard>
@@ -56,7 +57,17 @@ import { ref } from 'vue';
 import { useSearchStates } from '../../stores/searchStates';
 import ContentBoard from '../molecules/ContentBoard.vue';
 import SubmitButton from '../molecules/SubmitButton.vue';
+import ButtonWrapper from '../molecules/ButtonWrapper.vue';
 import { useValidation } from '../../composables/validation';
+
+const props = defineProps({ 'isDialog': Boolean })
+const emits = defineEmits(['close']);
+
+const onClose = () => {
+  if (props.isDialog) {
+    emits('close');
+  }
+}
 
 const { orderOptions, changeQueryStates } = useSearchStates();
 
@@ -96,7 +107,7 @@ const onSubmit = async () => {
 </script>
 
 <style lang="scss" scoped>
-@use '../../assets/scss/variables';
+@use '../../assets/scss/variables' as *;
 
 .search-todo {
   &__between-text {
@@ -112,7 +123,7 @@ const onSubmit = async () => {
   &__label {
     width: 100%;
     font-size: 14px;
-    color: variables.$default-text-color;
+    color: $default-text-color;
     opacity: 1;
   }
 

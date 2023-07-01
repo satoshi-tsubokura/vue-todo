@@ -35,10 +35,10 @@
             :rules="memoRules"
           />
         </v-row>
-        <v-row justify="center" class="btn-wrapper">
+        <ButtonWrapper>
           <SubmitButton :text="buttonText"></SubmitButton>
-          <slot name="buttons"></slot>
-        </v-row>
+          <v-btn variant="outlined" v-if="isDialog" @click="$emit('close')" text="閉じる"></v-btn>
+        </ButtonWrapper>
       </v-form>
     </template>
   </ContentBoard>
@@ -48,6 +48,7 @@
 import { onMounted, ref } from 'vue';
 import ContentBoard from '../molecules/ContentBoard.vue';
 import SubmitButton from '../molecules/SubmitButton.vue';
+import ButtonWrapper from '../molecules/ButtonWrapper.vue';
 import { useValidation } from '../../composables/validation';
 
 const props = defineProps({
@@ -71,9 +72,10 @@ const props = defineProps({
     type: String,
     required: true
   },
-  isAutoFocus: Boolean
+  isAutoFocus: Boolean,
+  isDialog: Boolean
 });
-const emits = defineEmits(['update:todoTitle', 'update:limitedAt', 'update:memo', 'submit']);
+const emits = defineEmits(['update:todoTitle', 'update:limitedAt', 'update:memo', 'submit', 'close']);
 
 const titleLabel = 'タイトル';
 const limitedAtLabel = '期限';
@@ -114,12 +116,6 @@ onMounted(() => autoFocus);
 </script>
 
 <style lang="scss" scoped>
-.btn-wrapper {
-  .v-btn {
-    margin-right: 16px;
-  }
-}
-
 .date-text-field {
   max-width: 200px;
 }

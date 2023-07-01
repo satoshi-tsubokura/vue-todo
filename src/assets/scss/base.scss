@@ -1,5 +1,5 @@
 @use 'vuetify';
-@use './variables';
+@use './variables' as *;
 
 @font-face {
   font-family: 'Roboto Slab';
@@ -16,5 +16,5 @@
 }
 
 body {
-  color: variables.$default-text-color;
+  color: $default-text-color;
 }

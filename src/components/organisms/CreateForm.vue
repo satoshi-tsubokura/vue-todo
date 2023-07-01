@@ -6,7 +6,9 @@
     form-title="タスク作成"
     button-text="作成"
     :is-auto-focus="true"
+    :is-dialog="isDialog"
     @submit="onSubmit"
+    @close="onClose"
   >
   </TodoForm>
 </template>
@@ -15,6 +17,15 @@
 import { ref } from 'vue';
 import TodoForm from './TodoForm.vue';
 import { useTodoList } from '@/stores/todoList';
+
+const props = defineProps({ 'isDialog': Boolean })
+const emits = defineEmits(['close']);
+
+const onClose = () => {
+  if (props.isDialog) {
+    emits('close');
+  }
+}
 
 const title = ref('');
 const limitedStr = ref('');

@@ -40,11 +40,11 @@ const isOpenDialog = ref(false);
 </script>
 
 <style lang="scss" scoped>
-@use '../../assets/scss/variables';
+@use '../../assets/scss/variables' as *;
 @use "sass:map";
 .todo-item {
   margin: 10px auto;
-  border: variables.$default-border;
+  border: $default-border;
   padding: 10px 20px 15px;
   position: relative;
 
@@ -64,23 +64,23 @@ const isOpenDialog = ref(false);
     display: block;
     text-align: right;
     font-size: 12px;
-    color: variables.$light-grey-text-color;
+    color: $light-grey-text-color;
   }
   
   &__memo {
     display: block;
     font-size: 14px;
-    color: variables.$light-grey-text-color;
+    color: $light-grey-text-color;
   }
 
   &.is-done {
-    border-color: lighten(variables.$default-border-color, 50%);
+    border-color: lighten($default-border-color, 50%);
     .todo-item__title {
-      color: lighten(variables.$default-text-color, 50%);
+      color: lighten($default-text-color, 50%);
       text-decoration: line-through
     }
     .todo-item__date, .todo-item__memo {
-      color: lighten(variables.$light-grey-text-color, 20%);
+      color: lighten($light-grey-text-color, 20%);
     }
   }
 }

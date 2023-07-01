@@ -1,8 +1,5 @@
 <template>
-  <TodoForm class="todo-edit-board" v-model:todo-title="title" v-model:limited-at="limitedStr" v-model:memo="memo" form-title="編集" button-text="保存" @submit="editHandler">
-    <template #buttons>
-      <v-btn variant="outlined" @click="$emit('closeDialog')" text="閉じる"></v-btn>
-    </template>
+  <TodoForm class="todo-edit-board" v-model:todo-title="title" v-model:limited-at="limitedStr" v-model:memo="memo" form-title="編集" button-text="保存" is-dialog @submit="editHandler" @close="$emit('closeDialog')">
   </TodoForm>
 </template>
 
