@@ -36,8 +36,8 @@
           />
         </v-row>
         <ButtonWrapper>
-          <SubmitButton :text="buttonText"></SubmitButton>
-          <v-btn variant="outlined" v-if="isDialog" @click="$emit('close')" text="閉じる"></v-btn>
+          <SubmitButton>{{ buttonText }}</SubmitButton>
+          <CloseButton @click="$emit('close')" v-show="isDialog"></CloseButton>
         </ButtonWrapper>
       </v-form>
     </template>
@@ -50,6 +50,7 @@ import ContentBoard from '../molecules/ContentBoard.vue';
 import SubmitButton from '../molecules/SubmitButton.vue';
 import ButtonWrapper from '../molecules/ButtonWrapper.vue';
 import { useValidation } from '../../composables/validation';
+import CloseButton from '../molecules/CloseButton.vue';
 
 const props = defineProps({
   todoTitle: {

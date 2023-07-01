@@ -44,8 +44,8 @@
             />
         </v-row>
         <ButtonWrapper>
-          <SubmitButton text="検索"></SubmitButton>
-          <v-btn variant="outlined" v-if="isDialog" @click="onClose" text="閉じる"></v-btn>
+          <SubmitButton>検索</SubmitButton>
+          <CloseButton @click="onClose" v-if="isDialog"></CloseButton>
         </ButtonWrapper>
       </v-form>
     </template>
@@ -59,6 +59,7 @@ import ContentBoard from '../molecules/ContentBoard.vue';
 import SubmitButton from '../molecules/SubmitButton.vue';
 import ButtonWrapper from '../molecules/ButtonWrapper.vue';
 import { useValidation } from '../../composables/validation';
+import CloseButton from '../molecules/CloseButton.vue';
 
 const props = defineProps({ 'isDialog': Boolean })
 const emits = defineEmits(['close']);
